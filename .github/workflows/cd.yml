@@ -1,0 +1,35 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - PROD
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: Deploy to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/${Flare_Key}.pem ec2-user@${Flare_IP} << 'EOF'
+          cd /var/www/flare
+          git pull origin PROD
+          npm install
+          npm run build
+        EOF
+
