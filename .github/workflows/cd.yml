@@ -15,7 +15,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/${Flare_Key}.pem ubuntu@${Flare_IP} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/${{ secrets.Flare_Key }}.pem ubuntu@${{ secrets.Flare_IP }} << 'EOF'
             cd /home/ubuntu/flare
             git pull origin PROD
           EOF
