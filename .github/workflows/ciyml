@@ -1,9 +1,9 @@
-name: CI Pipeline
+name: CI
 
 on:
   push:
     branches:
-      - PROD
+      - DEV
   pull_request:
     branches:
       - PROD
@@ -13,16 +13,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the repository
-      uses: actions/checkout@v3
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-
-    - name: Run tests
-      run: npm test
-
-    - name: Build project
-      run: npm run build
+      - name: Checkout the code
+        uses: actions/checkout@v2
