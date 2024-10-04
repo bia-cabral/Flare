@@ -13,9 +13,16 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
 
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.Flare_Key }}" > ~/.ssh/flare-key.pem
+          chmod 600 ~/.ssh/flare-key.pem
+
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/${{ secrets.Flare_Key }}.pem ubuntu@${{ secrets.Flare_IP }} << 'EOF'
-            cd /home/ubuntu/flare
-            git pull origin PROD
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/flare-key.pem ubuntu@${{ secrets.Flare_IP }} << 'EOF'
+          cd /home/ubuntu/flare
+          git pull origin PROD
           EOF
+
